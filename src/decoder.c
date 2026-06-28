@@ -1,6 +1,6 @@
 #include "decoder.h"
 
-int32_t sign_extend(uint32_t val, int bit_width) {
+static int32_t sign_extend(uint32_t val, int bit_width) {
     uint32_t sign_bit = 1U << (bit_width - 1);
     return (int32_t)((val ^ sign_bit) - sign_bit);
 }
@@ -33,6 +33,19 @@ void decode_instruction(uint32_t raw, decoded_instr_t *out) {
                                (EXTRACT_BITS(raw, 30, 25) << 5)  |
                                (EXTRACT_BITS(raw, 11, 8)  << 1);
             out->imm = sign_extend(raw_imm, 13);
+            break;
+        }
+        case OP_LUI:
+        case OP_AUIPC: {
+            out->imm = raw & 0xFFFFF000; 
+            break;
+        }
+        case OP_JAL: {
+            uint32_t raw_imm = (EXTRACT_BITS(raw, 31, 31) << 20) |
+                               (EXTRACT_BITS(raw, 19, 12) << 12) |
+                               (EXTRACT_BITS(raw, 20, 20) << 11) |
+                               (EXTRACT_BITS(raw, 30, 21) << 1);
+            out->imm = sign_extend(raw_imm, 21);
             break;
         }
     }

@@ -84,9 +84,9 @@ int main(int argc, char *argv[]) {
 
         const char *mnem = get_mnemonic(&dec);
         
-        printf("0x%08X %08X | ", addr, raw_inst);
-        
-        if (mnem[0] == 'U') {
+p       rintf("0x%08X %08X | ", addr, raw_inst);
+
+        if (mnem[0] == 'U' || raw_inst == 0xDEADBEEF) {
             printf("UNKNOWN\n");
             unknown++;
             continue;
