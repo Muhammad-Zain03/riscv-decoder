@@ -1,6 +1,7 @@
 #include "memory.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdint.h>
 
 int load_hex_file(const char *filename, uint8_t *memory, size_t mem_size) {
     FILE *fp = fopen(filename, "r");
